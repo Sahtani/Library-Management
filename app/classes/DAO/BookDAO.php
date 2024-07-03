@@ -1,28 +1,21 @@
 <?php
-
 // classes/DAO/BookDAO.php
 require_once __DIR__ . '/../Book.php';
+require_once __DIR__ . '/BaseDAO.php';
+require_once __DIR__ . '/../../config/Database.php'; // Chemin vers Database.php
 
+class BookDAO extends BaseDAO  {
+    protected $conn;
 
-class BookDAO {
-    private $conn;
-
-    public function __construct($servername, $username, $password, $dbname) {
-        $this->conn = new mysqli($servername, $username, $password, $dbname);
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
-        }
-    }
-
-    public function __destruct() {
-        $this->conn->close();
+    public function __construct() {
+        parent::__construct(); // Appel du constructeur de BaseDAO pour établir la connexion
     }
 
     public function getAllBooks() {
         $sql = "SELECT * FROM books";
         $result = $this->conn->query($sql);
         $books = [];
-        while ($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch(PDO::FETCH_ASSOC))  {
             $book = new Book($row['id'], $row['title'], $row['author'], $row['publication_year'], $row['genre'], $row['user_id']);
             $books[] = $book;
         }
@@ -40,24 +33,47 @@ class BookDAO {
     }
 
     public function addBook($title, $author, $publication_year, $genre, $user_id) {
-        $sql = "INSERT INTO books (title, author, publication_year, genre, user_id) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO books (title, author, publication_year, genre, user_id) VALUES (:title, :author, :publication_year, :genre, :user_id)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssisi", $title, $author, $publication_year, $genre, $user_id);
-        return $stmt->execute();
+        $stmt->bindParam(":title", $title, PDO::PARAM_STR);
+        $stmt->bindParam(":author", $author, PDO::PARAM_STR);
+        $stmt->bindParam(":publication_year", $publication_year, PDO::PARAM_INT);
+        $stmt->bindParam(":genre", $genre, PDO::PARAM_STR);
+        $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+    
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
-
     public function updateBook($id, $title, $author, $publication_year, $genre, $user_id) {
-        $sql = "UPDATE books SET title = ?, author = ?, publication_year = ?, genre = ?, user_id = ? WHERE id = ?";
+        $sql = "UPDATE books SET title = :title, author = :author, publication_year = :publication_year, genre = :genre, user_id = :user_id WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ssisii", $title, $author, $publication_year, $genre, $user_id, $id);
-        return $stmt->execute();
+        $stmt->bindParam(":title", $title, PDO::PARAM_STR);
+        $stmt->bindParam(":author", $author, PDO::PARAM_STR);
+        $stmt->bindParam(":publication_year", $publication_year, PDO::PARAM_INT);
+        $stmt->bindParam(":genre", $genre, PDO::PARAM_STR);
+        $stmt->bindParam(":user_id", $user_id, PDO::PARAM_INT);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+    
+        if ($stmt->execute()) {
+            return true;
+        } else {
+            return false;
+        }
     }
+    
+    
+
+    
 
     public function deleteBook($id) {
-        $sql = "DELETE FROM books WHERE id = ?";
+        $sql = "DELETE FROM books WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
+        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+    
 }
 ?>

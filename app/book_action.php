@@ -28,11 +28,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $publication_year = $_POST['publication_year'];
         $genre = $_POST['genre'];
         $user_id = $_POST['user_id'];
-
+        
         if ($id) {
             $bookDAO->updateBook($id, $title, $author, $publication_year, $genre, $user_id);
             echo "Livre mis à jour avec succès!";
         } else {
+            
             $bookDAO->addBook($title, $author, $publication_year, $genre, $user_id);
             echo "Livre ajouté avec succès!";
         }

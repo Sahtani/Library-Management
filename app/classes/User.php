@@ -1,17 +1,20 @@
 <?php
+// classes/User.php
 class User {
     private $id;
-    private $nom;
-    private $prenom;
+    private $firstName;
+    private $lastName;
     private $email;
-    private $telephone;
+    private $phoneNumber;
+    private $active;
 
-    public function __construct($id, $nom, $prenom, $email, $telephone) {
+    public function __construct($id, $firstName, $lastName, $email, $phoneNumber, $active) {
         $this->id = $id;
-        $this->nom = $nom;
-        $this->prenom = $prenom;
+        $this->firstName = $firstName;
+        $this->lastName = $lastName;
         $this->email = $email;
-        $this->telephone = $telephone;
+        $this->phoneNumber = $phoneNumber;
+        $this->active = $active;
     }
 
     // Getters
@@ -19,37 +22,49 @@ class User {
         return $this->id;
     }
 
-    public function getNom() {
-        return $this->nom;
+    public function getFirstName() {
+        return $this->firstName;
     }
 
-    public function getPrenom() {
-        return $this->prenom;
+    public function getLastName() {
+        return $this->lastName;
     }
 
     public function getEmail() {
         return $this->email;
     }
 
-    public function getTelephone() {
-        return $this->telephone;
+    public function getPhoneNumber() {
+        return $this->phoneNumber;
+    }
+
+    public function isActive() {
+        return $this->active;
     }
 
     // Setters
-    public function setNom($nom) {
-        $this->nom = $nom;
+    public function setId($id) {
+        $this->id = $id;
     }
 
-    public function setPrenom($prenom) {
-        $this->prenom = $prenom;
+    public function setFirstName($firstName) {
+        $this->firstName = $firstName;
+    }
+
+    public function setLastName($lastName) {
+        $this->lastName = $lastName;
     }
 
     public function setEmail($email) {
         $this->email = $email;
     }
 
-    public function setTelephone($telephone) {
-        $this->telephone = $telephone;
+    public function setPhoneNumber($phoneNumber) {
+        $this->phoneNumber = $phoneNumber;
+    }
+
+    public function setActive($active) {
+        $this->active = $active;
     }
 }
 ?>
