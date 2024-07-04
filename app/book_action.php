@@ -31,10 +31,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         if ($id) {
             $bookDAO->updateBook($id, $title, $author, $publication_year, $genre, $user_id);
+            header("Location: books.php");
             echo "Livre mis à jour avec succès!";
         } else {
             
             $bookDAO->addBook($title, $author, $publication_year, $genre, $user_id);
+            header("Location: books.php");
             echo "Livre ajouté avec succès!";
         }
     }

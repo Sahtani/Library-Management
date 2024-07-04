@@ -24,7 +24,7 @@ class UserDAO extends BaseDAO {
     public function updateUser($id, $firstName, $lastName, $email, $phoneNumber) {
         try {
             $sql = "UPDATE users 
-                    SET first_name = ?, last_name = ?, email = ?, phone_number = ? 
+                    SET first_name = ?, last_name = ?, email = ?, phone = ? 
                     WHERE id = ?";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(1, $firstName);
@@ -63,7 +63,7 @@ class UserDAO extends BaseDAO {
             $stmt->execute();
 
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $user = new User($row['id'], $row['first_name'], $row['last_name'], $row['email'], $row['phone'], $row['active']);
+                $user = new User($row['id'], $row['first_name'], $row['last_name'], $row['email'], $row['phone'], $row['active'],$row['password'],$row['role']);
                 $users[] = $user;
             }
 
