@@ -22,6 +22,14 @@ class BookDAO extends BaseDAO  {
         return $books;
     }
 
+    public function getAvailableBooks() {
+        $sql = "SELECT id, title FROM books WHERE disponible = TRUE";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+
     public function getBookById($id) {
         $sql = "SELECT * FROM books WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
@@ -63,6 +71,8 @@ class BookDAO extends BaseDAO  {
             return false;
         }
     }
+
+
     
     
 
@@ -73,6 +83,19 @@ class BookDAO extends BaseDAO  {
         $stmt = $this->conn->prepare($sql);
         $stmt->bindParam(":id", $id, PDO::PARAM_INT);
         return $stmt->execute();
+    }
+
+
+    public function updatedateLivre($book_id) {
+        try {
+            $sql = "UPDATE books SET returned = 1 WHERE id = :book_id";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':book_id', $book_id);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erreur : " . $e->getMessage();
+            return false;
+        }
     }
     
 }

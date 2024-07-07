@@ -1,14 +1,10 @@
 <?php
-session_start(); // Démarrer la session au début du fichier
-
-// Vérifiez si l'utilisateur est authentifié
+session_start();
 if (!isset($_SESSION['user_id'])) {
-    // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
     header("Location: login.php");
     exit();
 }
 
-// Définissez la variable user_id à partir de la session
 $user_id = $_SESSION['user_id'];
 ?>
 
@@ -25,7 +21,7 @@ $user_id = $_SESSION['user_id'];
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="public/css/footer.css">
     <style>
         body {
             font-family: Poppins, sans-serif;
@@ -126,7 +122,6 @@ $user_id = $_SESSION['user_id'];
                 <table class="table-auto  bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden w-4/5">
                     <tr class="bg-gray-200">
                         <th class="px-4 py-2">Prénom</th>
-                        <th class="px-4 py-2">Prénom</th>
                         <th class="px-4 py-2">Nom</th>
                         <th class="px-4 py-2">Adresse e-mail</th>
                         <th class="px-4 py-2">Numéro de téléphone</th>
@@ -145,24 +140,89 @@ $user_id = $_SESSION['user_id'];
                     // Afficher chaque utilisateur dans une ligne de tableau avec des boutons Modifier et Désactiver
                     foreach ($users as $user) {
                         echo "<tr class='border-t border-gray-200'>
-                <td class='px-4 py-2'>{$user->getId()}</td>
-                <td class='px-4 py-2'>{$user->getFirstName()}</td>
-                <td class='px-4 py-2'>{$user->getLastName()}</td>
-                <td class='px-4 py-2'>{$user->getEmail()}</td>
-                <td class='px-4 py-2'>{$user->getPhoneNumber()}</td>
-                <td class='px-4 py-2'>" . ($user->isActive() ? 'Oui' : 'Non') . "</td>
-                <td class='px-4 py-2'>
-                    <button class='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md' onclick=\"openEditPopup('{$user->getId()}', '{$user->getFirstName()}', '{$user->getLastName()}', '{$user->getEmail()}', '{$user->getPhoneNumber()}')\">Modifier</button>
-                    <form action='user_action.php' method='post' style='display:inline;'>
-                        <input type='hidden' name='id' value='{$user->getId()}'>
-                        <input type='submit' name='deactivate' class='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md' value='Désactiver'>
-                    </form>
+                <td class='border px-4 py-2'>{$user->getFirstName()}</td>
+                <td class='border px-4 py-2'>{$user->getLastName()}</td>
+                <td class='border px-4 py-2'>{$user->getEmail()}</td>
+                <td class='border px-4 py-2'>{$user->getPhoneNumber()}</td>
+                <td class='border px-4 py-2'>" . ($user->isActive() ? 'Oui' : 'Non') . "</td>
+                <td class='border px-4 py-2'>
+                <div class='flex gap-6'>
+                <button class='inline-block w-1/2' onclick=\"openEditPopup('{$user->getId()}', '{$user->getFirstName()}', '{$user->getLastName()}', '{$user->getEmail()}', '{$user->getPhoneNumber()}')\"> 
+                 <svg class='w-10 h-10' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='#4ea343' d='M441 58.9L453.1 71c9.4 9.4 9.4 24.6 0 33.9L424 134.1 377.9 88 407 58.9c9.4-9.4 24.6-9.4 33.9 0zM209.8 256.2L344 121.9 390.1 168 255.8 302.2c-2.9 2.9-6.5 5-10.4 6.1l-58.5 16.7 16.7-58.5c1.1-3.9 3.2-7.5 6.1-10.4zM373.1 25L175.8 222.2c-8.7 8.7-15 19.4-18.3 31.1l-28.6 100c-2.4 8.4-.1 17.4 6.1 23.6s15.2 8.5 23.6 6.1l100-28.6c11.8-3.4 22.5-9.7 31.1-18.3L487 138.9c28.1-28.1 28.1-73.7 0-101.8L474.9 25C446.8-3.1 401.2-3.1 373.1 25zM88 64C39.4 64 0 103.4 0 152V424c0 48.6 39.4 88 88 88H360c48.6 0 88-39.4 88-88V312c0-13.3-10.7-24-24-24s-24 10.7-24 24V424c0 22.1-17.9 40-40 40H88c-22.1 0-40-17.9-40-40V152c0-22.1 17.9-40 40-40H200c13.3 0 24-10.7 24-24s-10.7-24-24-24H88z'/></svg>
+  
+</button>
+ <div class='w-1/2'>
+    <form action='user_action.php' method='post' class='w-full' style='display: inline-flex; align-items: center;'>
+        <input type='hidden' name='id' value='{$user->getId()}'>
+        <button type='submit' name='deactivate' class='bg-red-500 hover:bg-red-600 inline-block text-white px-3 py-1 rounded-md'>
+            <svg class='w-7 h-7' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'>
+                <path fill='#ffffff' d='M367.2 412.5L99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192c41.5 0 79.9-13.1 111.2-35.5zm45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192c-41.5 0-79.9 13.1-111.2 35.5L412.5 367.2zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256z'/>
+            </svg>
+        </button>
+    </form>
+</div>
+
+                </div>
+                   
                 </td>
             </tr>";
                     }
                     ?>
                 </table>
             </div>
+
+            <h1 class="text-3xl font-bold text-center p-6">Gestion des Emprunts</h1>
+
+
+            <h2 class="text-3xl font-bold text-center p-6">liste des Emprunts</h2>
+            <div class="w-full flex items-center justify-center mb-20">
+                <table class="table-auto  bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden w-4/5">
+                    <tr class="bg-gray-200">
+                        <th class="border px-4 py-2">ID</th>
+                        <th class="border px-4 py-2">User ID</th>
+                        <th class="border px-4 py-2">nom d'utilisateur</th>
+                        <th class="border px-4 py-2">Book ID</th>
+                        <th class="border px-4 py-2">nom de livre</th>
+                        <th class="border px-4 py-2"> Date d'emprunt</th>
+                        <th class="border px-4 py-2"> Date prévue</th>
+                        <th class="border px-4 py-2">Date de retour</th>
+                        <th class="border px-4 py-2">Statut</th>
+                        <th class="border px-4 py-2">Actions</th>
+                    </tr>
+                    <?php
+                    require_once 'classes/DAO/EmpruntDAO.php';
+
+                    $empruntDAO = new EmpruntDAO("localhost", "root", "", "library");
+
+                    $borrowings = $empruntDAO->getAllEmprunts();
+
+                    foreach ($borrowings as $borrowing) {
+                        $userId = $borrowing->getUserId();
+                        $bookId = $borrowing->getBookId();
+                        $userName = $empruntDAO->getUserNameById($userId);
+                        $bookName = $empruntDAO->getBookNameById($bookId);
+
+                        echo "<tr>
+                <td class='border px-4 py-2'>{$borrowing->getId()}</td>
+                <td class='border px-4 py-2'>{$userId}</td>
+                <td class='border px-4 py-2'>{$userName}</td>
+                <td class='border px-4 py-2'>{$bookId}</td>
+                <td class='border px-4 py-2'>{$bookName}</td>
+                <td class='border px-4 py-2'>{$borrowing->getBorrowDate()}</td>
+                <td class='border px-4 py-2'>{$borrowing->getDueDate()}</td>
+                <td class='border px-4 py-2'>{$borrowing->getReturnDate()}</td>
+               <td class='border px-4 py-2 status'></td>
+                    
+                <td class='border px-4 py-2'>
+                    <button onclick=\"openReturnPopup('{$borrowing->getId()}')\" class='bg-green-500 text-white px-4 py-2 rounded'>Return</button>
+                </td>
+            </tr>";
+                    }
+                    ?>
+                </table>
+            </div>
+            <!-- popup -->
+
             <!--add user -->
             <div id="userModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
                 <div class="bg-white p-6 rounded-lg shadow-lg w-1/3">
@@ -209,13 +269,38 @@ $user_id = $_SESSION['user_id'];
                     <label for="edit_phoneNumber" class="block text-sm font-medium text-gray-700">Numéro de téléphone :</label>
                     <input type="tel" id="edit_phoneNumber" name="phone" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full" required><br>
                     <div class="flex justify-end">
-                        <button type="button"  onclick="closeEditUserPopup()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Annuler</button>
+                        <button type="button" onclick="closeEditUserPopup()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Annuler</button>
                         <button type="submit" name="updateUser" class="bg-blue-500 text-white px-4 py-2 rounded">Confirmer</button>
                     </div>
                 </form>
             </div>
         </div>
 
+        <!-- Popup modal to return a book -->
+        <div id="returnBookPopup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+            <div class="bg-white p-4 rounded shadow-md">
+                <h2 class="text-xl font-bold mb-4">Return Book</h2>
+                <form id="returnForm" action="emprunt_admin_action.php" method="post">
+                    <input type="hidden" id="return_id" name="id">
+                    <input type="hidden" name="action" value="returnadmin">
+
+                    <label for="return_date" class="block text-sm font-medium text-gray-700">Return Date:</label>
+                    <input type="date" id="return_date" name="return_date" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full" required>
+
+                    <label for="late_fee" class="block text-sm font-medium text-gray-700">Late Fee:</label>
+                    <input type="number" id="late_fee" name="late_fee" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full">
+
+                    <div class="flex justify-end">
+                        <button type="button" onclick="closeReturnPopup()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Confirm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <footer>
+            <p>&copy; 2024 Gestion de Bibliothèque</p>
+        </footer>
+        <script src="script.js"></script>
         <script>
             function openEditPopup(id, firstName, lastName, email, phoneNumber) {
                 // Remplir le formulaire de modification avec les données de l'utilisateur sélectionné
@@ -240,6 +325,28 @@ $user_id = $_SESSION['user_id'];
             function closeModal() {
                 document.getElementById('userModal').classList.add('hidden');
             }
+            // for emprunter un livre
+            function openReturnPopup(id) {
+                document.getElementById('return_id').value = id;
+                document.getElementById('returnBookPopup').classList.remove('hidden');
+            }
+
+            function closeReturnPopup() {
+                document.getElementById('returnBookPopup').classList.add('hidden');
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                const rows = document.querySelectorAll("#borrowingTable tbody tr");
+                rows.forEach(row => {
+                    const dueDate = new Date(row.cells[6].innerText);
+                    const returnDate = row.cells[7].innerText ? new Date(row.cells[7].innerText) : null;
+                    let status = "À temps";
+                    if (returnDate && returnDate > dueDate) {
+                        status = "En retard";
+                    }
+                    row.cells[8].innerText = status;
+                });
+            });
         </script>
 </body>
 

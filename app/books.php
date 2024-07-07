@@ -3,7 +3,6 @@ session_start(); // Démarrer la session au début du fichier
 
 // Vérifiez si l'utilisateur est authentifié
 if (!isset($_SESSION['user_id'])) {
-  // Redirigez vers la page de connexion si l'utilisateur n'est pas connecté
   header("Location: login.php");
   exit();
 }
@@ -134,7 +133,6 @@ $user_id = $_SESSION['user_id'];
               <th class="px-4 py-2">Auteur</th>
               <th class="px-4 py-2">Année de publication</th>
               <th class="px-4 py-2">Genre</th>
-              <th class="px-4 py-2">ID Utilisateur</th>
               <th class="px-4 py-2">Actions</th>
             </tr>
           </thead>
@@ -145,15 +143,12 @@ $user_id = $_SESSION['user_id'];
             $bookDAO = new BookDAO("localhost", "root", "", "library");
             $books = $bookDAO->getAllBooks();
 
-            // Afficher chaque livre dans une ligne de tableau avec des boutons Modifier et Supprimer
             foreach ($books as $book) {
               echo "<tr class='border-t border-gray-200'>
-                    <td class='px-4 py-2'>{$book->getId()}</td>
                     <td class='px-4 py-2'>{$book->getTitle()}</td>
                     <td class='px-4 py-2'>{$book->getAuthor()}</td>
                     <td class='px-4 py-2'>{$book->getPublicationYear()}</td>
                     <td class='px-4 py-2'>{$book->getGenre()}</td>
-                    <td class='px-4 py-2'>{$book->getUserId()}</td>
                     <td class='px-4 py-2'>
                         <button class='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md' onclick=\"openEditPopup('{$book->getId()}', '{$book->getTitle()}', '{$book->getAuthor()}', '{$book->getPublicationYear()}', '{$book->getGenre()}')\">Modifier</button>
                         <form action='book_action.php' method='post' class='inline'>
@@ -161,6 +156,52 @@ $user_id = $_SESSION['user_id'];
                             <input type='button'  onclick='opendeleteModal()'  value='Supprimer' class='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md'>
                         </form>
                     </td>
+                </tr>";
+            }
+            ?>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="  flex flex-col flex-end mb-4">
+        <button onclick="openModal()" class=" bg-blue-400 hover:bg-blue-300 text-center mt-10 ml-20 w-60 text-white font-semibold py-2 px-4 rounded">
+          Emprunter un livre
+        </button>
+      </div>
+      <h1 class="text-3xl font-bold text-center p-6">Liste des emprunts</h1>
+      <div class="w-full flex items-center justify-center">
+        <table class="table-auto  bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden w-4/5">
+          <thead>
+            <tr class="bg-gray-200">
+              <th class="px-4 py-2">Nom de livre</th>
+              <th class="px-4 py-2">Date d’emprunt</th>
+              <th class="px-4 py-2">Date de retour prévue</th>
+              <th class="px-4 py-2">Date de retour</th>
+              <th class="px-4 py-2">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php
+            require_once 'classes/DAO/EmpruntDAO.php';
+
+            $borrowingDAO = new EmpruntDAO("localhost", "root", "", "library");
+
+            $emprunts = $borrowingDAO->getAllEmprunts();
+            $availableBooks = $bookDAO->getAvailableBooks();
+
+            foreach ($emprunts as $emprunt) {
+              echo "<tr>
+                   <td class='border px-4 py-2'>{$emprunt->getBookTitle()}</td>
+                    <td class='border px-4 py-2'>{$emprunt->getBorrowDate()}</td>
+                    <td class='border px-4 py-2'>{$emprunt->getDueDate()}</td>
+                    <td class='border px-4 py-2'>{$emprunt->getReturnDate()}</td>
+                    <td class='border px-4 py-2'>
+                    <div class='flex gap-4'>
+                      <button onclick=\"openExtendPopup('{$emprunt->getId()}', '{$emprunt->getDueDate()}')\" class='w-1/2 bg-yellow-500 text-white px-4 py-2 rounded'>prolonger</button>
+                        <button onclick=\"openReturnPopup('{$emprunt->getId()}')\" class='w-1/2 bg-green-500 text-white  px-4 py-2 rounded'>retourner</button>
+                  
+                    </div>
+                        </td>
                 </tr>";
             }
             ?>
@@ -221,9 +262,6 @@ $user_id = $_SESSION['user_id'];
         </div>
       </div>
       <!-- delete model -->
-
-
-
       <div id="deleteModel" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-full max-w-md max-h-full">
           <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -247,10 +285,73 @@ $user_id = $_SESSION['user_id'];
         </div>
       </div>
 
+      <!-- popup for emprunt live -->
+      <!-- popup for emprunter un livre  -->
+      <div id="empruntPopup" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center hidden">
+        <form action="emprunt_action.php" method="post" class="bg-white p-4 rounded shadow-md mb-8 w-2/6">
+          <input type="number" id="user_id" hidden name="user_id" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full" value="<?php echo htmlspecialchars($user_id); ?>">
+
+          <label for="book_id" class="block text-sm font-medium text-gray-700">Livre:</label>
+          <select id="book_id" name="book_id" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full" required>
+            <option value="" disabled selected>Selectionner un livre</option>
+            <?php foreach ($availableBooks as $book) : ?>
+              <option value="<?php echo $book['id']; ?>"><?php echo $book['title']; ?></option>
+            <?php endforeach; ?>
+          </select>
+          <input type="date" id="borrow_date" name="borrow_date" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full hidden" required>
+
+          <label for="due_date" class="block text-sm font-medium text-gray-700">Date de retour prévue:</label>
+          <input type="date" id="due_date" name="due_date" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full" required>
+
+          <div class="flex justify-end">
+            <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Annuler</button>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Soumettre</button>
+          </div>
+        </form>
+
+      </div>
+      <!-- Popup modal to extend borrowing period -->
+      <div id="extendBorrowingPopup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+        <div class="bg-white p-4 rounded shadow-md w-1/4">
+          <h2 class="text-xl font-bold mb-4">Prolonger l’emprunt</h2>
+          <form id="extendForm" action="emprunt_action.php" method="post" class="w-full">
+            <input type="hidden" id="extend_id" name="id">
+            <input type="hidden" name="action" value="extend">
+
+            <label for="new_due_date" class="block text-sm font-medium text-gray-700">Nouvelle date de retour prévue:</label>
+            <input type="date" id="new_due_date" name="new_due_date" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full" required>
+
+            <div class="flex justify-end">
+              <button type="button" onclick="closeExtendPopup()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Annuler</button>
+              <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Confirmer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Popup modal to return a book -->
+      <div id="returnBookPopup" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+        <div class="bg-white p-4 rounded shadow-md w-1/4">
+          <h2 class="text-xl font-bold mb-4">Retourner un livre</h2>
+          <form id="returnForm" action="emprunt_action.php" method="post" class="w-full">
+            <input type="hidden" id="return_id" name="id">
+            <input type="hidden" name="action" value="return">
+
+           
+            <input type="date" id="return_date" name="return_date" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full hidden " required>
+
+            <div class="flex justify-end">
+              <button type="button" onclick="closeReturnPopup()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Annuler</button>
+              <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Confirmer</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
 
       <script>
         function openEditPopup(id, title, author, publication_year, genre, user_id) {
-          // Remplir le formulaire de modification avec les données du livre sélectionné
+
           document.getElementById('edit_id').value = id;
           document.getElementById('edit_title').value = title;
           document.getElementById('edit_author').value = author;
@@ -281,6 +382,38 @@ $user_id = $_SESSION['user_id'];
         function closedeleteModal() {
           document.getElementById('deleteModel').classList.add('hidden');
         }
+
+        // emprunt un livre
+        function openExtendPopup(id, due_date) {
+          document.getElementById('extend_id').value = id;
+          document.getElementById('new_due_date').value = due_date;
+          document.getElementById('extendBorrowingPopup').classList.remove('hidden');
+        }
+
+        function closeExtendPopup() {
+          document.getElementById('extendBorrowingPopup').classList.add('hidden');
+        }
+
+        function openReturnPopup(id) {
+          document.getElementById('return_id').value = id;
+          document.getElementById('returnBookPopup').classList.remove('hidden');
+        }
+
+        function closeReturnPopup() {
+          document.getElementById('returnBookPopup').classList.add('hidden');
+        }
+
+        function openModal() {
+          document.getElementById('empruntPopup').classList.remove('hidden');
+        }
+
+        function closeModal() {
+          document.getElementById('empruntPopup').classList.add('hidden');
+        }
+
+        document.getElementById('borrow_date').value = new Date().toISOString().split('T')[0];
+        document.getElementById('return_date').value = new Date().toISOString().split('T')[0];
+   
       </script>
     </div>
 </body>

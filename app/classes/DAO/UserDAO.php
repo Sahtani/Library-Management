@@ -58,7 +58,7 @@ class UserDAO extends BaseDAO {
     public function getAllUsers() {
         try {
             $users = [];
-            $sql = "SELECT * FROM users";
+            $sql = "SELECT * FROM users where role='user'";
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
 

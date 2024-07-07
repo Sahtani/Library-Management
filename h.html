@@ -1,370 +1,200 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <title>DataWare</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gestion de Bibliothèque</title>
+<link rel="stylesheet" href="styles.css">
 </head>
+<style>
+    /* Ajouter après les styles existants dans styles.css */
+body {
+font-family: Arial, sans-serif;
+margin: 0;
+padding: 0;
+background-color: #f0f0f0;
+}
+header {
+background-color: #333;
+color: #fff;
+text-align: center;
+padding: 1rem 0;
+}
+main {
+max-width: 1200px;
+margin: 20px auto;
+padding: 20px;
+background-color: #fff;
+border: 1px solid #ccc;
+border-radius: 5px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+display: grid;
+grid-gap: 20px;
+grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+section {
+padding: 15px;
+background-color: #f9f9f9;
+border: 1px solid #ddd;
+border-radius: 5px;
+box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+h2 {
+margin-bottom: 10px;
+border-bottom: 1px solid #ccc;
+padding-bottom: 5px;
+}
+.item-list {
+list-style-type: none;
+padding: 0;
+margin-top: 10px;
+}
+.item-list li {
+padding: 10px;
+background-color: #fff;
+margin-bottom: 10px;
+border: 1px solid #eee;
+border-radius: 5px;
+}
+.item-list li:hover {
+background-color: #f0f0f0;
+}
+.item-form {
+margin-top: 20px;
+}
+form {
+display: grid;
+grid-gap: 10px;
+}
+label {
+font-weight: bold;
+}
+input,
+select {
+padding: 8px;
+border: 1px solid #ccc;
+border-radius: 3px;
+font-size: 1rem;
+}
+button {
+padding: 10px;
+background-color: #333;
+color: #fff;
+border: none;
+cursor: pointer;
+transition: background-color 0.3s ease;
+}
+button:hover {
+background-color: #555;
+}
+footer {
+text-align: center;
+padding: 10px;
+background-color: #333;
+color: #fff;
+position: fixed;
+bottom: 0;
+width: 100%;
+}
 
+</style>
 <body>
-    <section class="equipe">
-        <div class="bg-gray-100 py-10">
-
-            <div class="px-4 sm:px-6 lg:px-8">
-                <div class="sm:flex sm:items-center">
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                        <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Affichage des equipes</h1>
-                        <!-- <a href="add.php"> -->
-                        <button id="addEmployeeBtn" type="button" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Ajouter une Equipe</button>
-                        <div id="employeeModalTrigger" class="hidden"></div>
-        <div id="employeeModal" class="hidden">
-            <div class="">
-                <h2>Ajouter une nouvelle equipe</h2>
-
-                <form action="" method="post">
-                    <div>
-                        <label for="" class="block text-sm font-medium leading-6 text-gray-900">Nom Equipe</label>
-                        <div class="relative mt-2 rounded-md shadow-sm">
-                            <input type="text" name="nom_equipe" id="" class="block rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
-                    </div>
-                    <div>
-                        <label for="" class="block text-sm font-medium leading-6 text-gray-900">Date de Création</label>
-                        <div class="relative mt-2 rounded-md shadow-sm">
-                            <input type="date" name="date_creation" id="" class="block rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                        </div>
-                    </div>
-                    <button type="submit" name="submit" >Ajouter</button>
-                </form>
-            </div>
-
-            <div class="">
-                <a href="index.php" class="">Retour</a>
-            </div>
-        </div>
-                        </a>
-                    </div>
-                </div>
-                <div class="mt-8 flex flex-col">
-                    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle">
-                            <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
-                                <table class="min-w-full divide-y divide-gray-300">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" class="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">Id Equipe</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Nom Equipe</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Date de Creation</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                             <span>Modifier</span>
-                                            </th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                                <span>Supprimer</span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200 bg-white">
-
-                                        <tr>
-
-                                            <?php
-                                            $sql = "SELECT * FROM equipe";
-                                            $result = mysqli_query($conn, $sql);
-
-                                            if ($result) {
-                                                while ($row = mysqli_fetch_assoc($result)) {
-                                            ?>
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-center font-medium text-gray-900 sm:pl-6 lg:pl-8">
-                                                        <?php
-                                                        echo $row["id_equipe"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["nom_equipe"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["date_creation"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-6 lg:pr-8">
-                                                        <a href="edit.php?id_equipe=<?php echo $row['id_equipe']; ?>" class="text-indigo-600 hover:text-indigo-900">Modifier<span class="sr-only"></span></a>
-                                                    </td>
-                                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-6 lg:pr-8">
-                                                    <a href="delete.php?id_equipe=<?php echo $row['id_equipe']; ?>" class="text-indigo-600 hover:text-indigo-900">Supprimer<span class="sr-only"></span></a>
-                                                    </td>
-                                        </tr>
-                                <?php
-                                                }
-                                                mysqli_free_result($result);
-                                            } else {
-                                                echo "Error: " . mysqli_error($conn);
-                                            }
-                                ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="membre">
-        <div class="bg-gray-100 py-10">
-
-            <div class="px-4 sm:px-6 lg:px-8">
-                <div class="sm:flex sm:items-center">
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                    <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Affichage des membres</h1>
-
-                        <button type="button" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Ajouter un Membre</button>
-                    </div>
-                </div>
-                <div class="mt-8 flex flex-col">
-                    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle">
-                            <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
-                                <table class="min-w-full divide-y divide-gray-300">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" class="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">Id Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Nom Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Prenom Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Email Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Telephone </th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Role Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Statut Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Equipe</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                                <span>Modifier</span>
-                                            </th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                                <span>Supprimer</span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200 bg-white">
-
-                                        <tr>
-                                            <?php
-                                            $sql = "SELECT * FROM membre";
-                                            $result = mysqli_query($conn, $sql);
-
-                                            if ($result) {
-                                                while ($row = mysqli_fetch_assoc($result)) {
-                                            ?>
-
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-center font-medium text-gray-900 sm:pl-6 lg:pl-8">
-                                                        <?php
-                                                        echo $row["id_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["nom_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["prenom_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["email_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["tel_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["role_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["statut_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["equipe_mem"];
-                                                        ?>
-                                                    </td>
-
-                                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-6 lg:pr-8">
-                                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Modifier<span class="sr-only"></span></a>
-                                                    </td>
-                                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-6 lg:pr-8">
-                                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Supprimer<span class="sr-only"></span></a>
-                                                    </td>
-                                        </tr>
-                                <?php
-                                                }
-                                                mysqli_free_result($result);
-                                            } else {
-                                                echo "Error: " . mysqli_error($conn);
-                                            }
-                                ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-
-    <section class="equipeandmember">
-        <div class="bg-gray-100 py-10">
-
-            <div class="px-4 sm:px-6 lg:px-8">
-                <div class="sm:flex sm:items-center">
-                    <div class="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-                    <h1 class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-4xl dark:text-white">Affichage des membres et leurs equipes</h1>
-
-                        <!-- <button type="button" class="inline-flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto">Affichage toutes les données</button> -->
-                    </div>
-                </div>
-                <div class="mt-8 flex flex-col">
-                    <div class="-my-2 -mx-4 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="inline-block min-w-full py-2 align-middle">
-                            <div class="overflow-hidden shadow-sm ring-1 ring-black ring-opacity-5">
-                                <table class="min-w-full divide-y divide-gray-300">
-                                    <thead class="bg-gray-50">
-                                        <tr>
-                                            <th scope="col" class="py-3.5 pl-4 pr-3 text-center text-sm font-semibold text-gray-900 sm:pl-6 lg:pl-8">Id Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Nom Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Prenom Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Email Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Telephone </th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Role Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Statut Membre</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Nom Equipe</th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">Date de Creation</th>
-
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                                <span>Modifier</span>
-                                            </th>
-                                            <th scope="col" class="px-3 py-3.5 text-center text-sm font-semibold text-gray-900">
-                                                <span>Supprimer</span>
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-200 bg-white">
-
-                                        <tr>
-                                            <?php
-                                            $sql = "SELECT * FROM equipe inner join  membre  on membre.equipe_mem = equipe.id_equipe";
-                                            $result = mysqli_query($conn, $sql);
-
-                                            if ($result) {
-                                                while ($row = mysqli_fetch_assoc($result)) {
-                                            ?>
-                                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm text-center font-medium text-gray-900 sm:pl-6 lg:pl-8">
-                                                        <?php
-                                                        echo $row["id_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["nom_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["prenom_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["email_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["tel_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["role_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["statut_mem"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["nom_equipe"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-center text-gray-500">
-                                                        <?php
-                                                        echo $row["date_creation"];
-                                                        ?>
-                                                    </td>
-                                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-6 lg:pr-8">
-                                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Modifier<span class="sr-only"></span></a>
-                                                    </td>
-                                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-6 lg:pr-8">
-                                                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Supprimer<span class="sr-only"></span></a>
-                                                    </td>
-                                        </tr>
-                                <?php
-                                                }
-                                                mysqli_free_result($result);
-                                            } else {
-                                                echo "Error: " . mysqli_error($conn);
-                                            }
-                                ?>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </section>
-    <script>
-     document.getElementById('addEmployeeBtn').addEventListener('click', function() {
-        document.getElementById('employeeModalTrigger').classList.remove("hidden");
-        document.getElementById('employeeModal').classList.remove("hidden");
-    });
-
-    document.getElementById('closeModalBtn').addEventListener('click', function() {
-        document.getElementById('employeeModalTrigger').classList.add("hidden");
-        document.getElementById('employeeModal').classList.add("hidden");
-    });
-
-    document.getElementById('addEquipeBtn').addEventListener('click', function() {
-        document.getElementById('equipeModalTrigger').classList.remove("hidden");
-        document.getElementById('equipeModal').classList.remove("hidden");
-    });
-
-    document.getElementById('closeEquipeBtn').addEventListener('click', function() {
-        document.getElementById('equipeModalTrigger').classList.add("hidden");
-        document.getElementById('equipeModal').classList.add("hidden");
-    });
-</script>
+<header>
+<h1>Gestion de Bibliothèque</h1>
+</header>
+<main>
+<section id="books">
+<h2>Liste des Livres</h2>
+<ul id="book-list" class="item-list">
+<!-- Liste des livres à afficher dynamiquement -->
+<!-- Exemple d'un livre -->
+<li>
+<div class="book-info">
+<h3>Livre 1</h3>
+<p><strong>Auteur :</strong> Auteur 1</p>
+<p><strong>Genre :</strong> Fiction</p>
+</div>
+</li>
+</ul>
+<div id="book-form" class="item-form">
+<h3>Ajouter un Livre</h3>
+<form id="add-book-form">
+<label for="title">Titre :</label>
+<input type="text" id="title" required>
+<label for="author">Auteur :</label>
+<input type="text" id="author" required>
+<label for="genre">Genre :</label>
+<input type="text" id="genre" required>
+<button type="submit">Ajouter</button>
+</form>
+</div>
+</section>
+<section id="users">
+<h2>Liste des Utilisateurs</h2>
+<ul id="user-list" class="item-list">
+<!-- Liste des utilisateurs à afficher dynamiquement -->
+<!-- Exemple d'un utilisateur -->
+<li>
+<div class="user-info">
+<h3>Prénom Nom</h3>
+<p><strong>Email :</strong> exemple@email.com</p>
+<p><strong>Téléphone :</strong> 123-456-7890</p>
+</div>
+</li>
+</ul>
+<div id="user-form" class="item-form">
+<h3>Ajouter un Utilisateur</h3>
+<form id="add-user-form">
+<label for="firstName">Prénom :</label>
+<input type="text" id="firstName" required>
+<label for="lastName">Nom :</label>
+<input type="text" id="lastName" required>
+<label for="email">Email :</label>
+<input type="email" id="email" required>
+<label for="phone">Téléphone :</label>
+<input type="tel" id="phone" required>
+<button type="submit">Ajouter</button>
+</form>
+</div>
+</section>
+<section id="loans">
+<h2>Liste des Emprunts</h2>
+<ul id="loan-list" class="item-list">
+<!-- Liste des emprunts à afficher dynamiquement -->
+<!-- Exemple d'un emprunt -->
+<li>
+<div class="loan-info">
+<h3>Livre Emprunté</h3>
+<p><strong>Emprunteur :</strong> Prénom Nom</p>
+<p><strong>Date d'emprunt :</strong> 2024-07-15</p>
+<p><strong>Date de retour prévue :</strong>
+2024-07-30</p>
+</div>
+</li>
+</ul>
+<div id="loan-form" class="item-form">
+<h3>Emprunter un Livre</h3>
+<form id="add-loan-form">
+<label for="selectUser">Sélectionner Utilisateur :</label>
+<select id="selectUser" required>
+<!-- Options des utilisateurs à charger dynamiquement -->
+<option value="1">Prénom Nom</option>
+<option value="2">Autre Utilisateur</option>
+</select>
+<label for="selectBook">Sélectionner Livre :</label>
+<select id="selectBook" required>
+<!-- Options des livres à charger dynamiquement -->
+<option value="1">Livre 1</option>
+<option value="2">Autre Livre</option>
+</select>
+<button type="submit">Emprunter</button>
+</form>
+</div>
+</section>
+</main>
+<footer>
+<p>&copy; 2024 Gestion de Bibliothèque</p>
+</footer>
+<script src="script.js"></script>
 </body>
-
 </html>
