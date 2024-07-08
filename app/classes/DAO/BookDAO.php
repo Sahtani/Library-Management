@@ -23,7 +23,7 @@ class BookDAO extends BaseDAO  {
     }
 
     public function getAvailableBooks() {
-        $sql = "SELECT id, title FROM books WHERE disponible = TRUE";
+        $sql = "SELECT id, title FROM books WHERE disponible = 1";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

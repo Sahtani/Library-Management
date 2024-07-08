@@ -164,7 +164,7 @@ $user_id = $_SESSION['user_id'];
       </div>
 
       <div class="  flex flex-col flex-end mb-4">
-        <button onclick="openModal()" class=" bg-blue-400 hover:bg-blue-300 text-center mt-10 ml-20 w-60 text-white font-semibold py-2 px-4 rounded">
+        <button onclick="openEmpruntModal()" class=" bg-blue-400 hover:bg-blue-300 text-center mt-10 ml-20 w-60 text-white font-semibold py-2 px-4 rounded">
           Emprunter un livre
         </button>
       </div>
@@ -304,7 +304,7 @@ $user_id = $_SESSION['user_id'];
           <input type="date" id="due_date" name="due_date" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full" required>
 
           <div class="flex justify-end">
-            <button type="button" onclick="closeModal()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Annuler</button>
+            <button type="button" onclick="closeEmpruntModal()" class="bg-gray-500 text-white px-4 py-2 rounded mr-2">Annuler</button>
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Soumettre</button>
           </div>
         </form>
@@ -403,11 +403,11 @@ $user_id = $_SESSION['user_id'];
           document.getElementById('returnBookPopup').classList.add('hidden');
         }
 
-        function openModal() {
+        function openEmpruntModal() {
           document.getElementById('empruntPopup').classList.remove('hidden');
         }
 
-        function closeModal() {
+        function closeEmpruntModal() {
           document.getElementById('empruntPopup').classList.add('hidden');
         }
 

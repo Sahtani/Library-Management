@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ./log-in.php");
     exit();
 }
 
@@ -176,33 +176,35 @@ $user_id = $_SESSION['user_id'];
 
             <h2 class="text-3xl font-bold text-center p-6">liste des Emprunts</h2>
             <div class="w-full flex items-center justify-center mb-20">
-                <table class="table-auto  bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden w-4/5">
-                    <tr class="bg-gray-200">
-                        <th class="border px-4 py-2">ID</th>
-                        <th class="border px-4 py-2">User ID</th>
-                        <th class="border px-4 py-2">nom d'utilisateur</th>
-                        <th class="border px-4 py-2">Book ID</th>
-                        <th class="border px-4 py-2">nom de livre</th>
-                        <th class="border px-4 py-2"> Date d'emprunt</th>
-                        <th class="border px-4 py-2"> Date prévue</th>
-                        <th class="border px-4 py-2">Date de retour</th>
-                        <th class="border px-4 py-2">Statut</th>
-                        <th class="border px-4 py-2">Actions</th>
-                    </tr>
-                    <?php
-                    require_once 'classes/DAO/EmpruntDAO.php';
+                <table id="empruntTable" class="table-auto bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden w-4/5">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border px-4 py-2">ID</th>
+                            <th class="border px-4 py-2">User ID</th>
+                            <th class="border px-4 py-2">nom d'utilisateur</th>
+                            <th class="border px-4 py-2">Book ID</th>
+                            <th class="border px-4 py-2">nom de livre</th>
+                            <th class="border px-4 py-2">Date d'emprunt</th>
+                            <th class="border px-4 py-2">Date prévue</th>
+                            <th class="border px-4 py-2">Date de retour</th>
+                            <th class="border px-4 py-2">Statut</th>
+                            <th class="border px-4 py-2">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        require_once 'classes/DAO/EmpruntDAO.php';
 
-                    $empruntDAO = new EmpruntDAO("localhost", "root", "", "library");
+                        $empruntDAO = new EmpruntDAO("localhost", "root", "", "library");
 
-                    $borrowings = $empruntDAO->getAllEmprunts();
+                        $borrowings = $empruntDAO->getAllEmprunts();
 
-                    foreach ($borrowings as $borrowing) {
-                        $userId = $borrowing->getUserId();
-                        $bookId = $borrowing->getBookId();
-                        $userName = $empruntDAO->getUserNameById($userId);
-                        $bookName = $empruntDAO->getBookNameById($bookId);
-
-                        echo "<tr>
+                        foreach ($borrowings as $borrowing) {
+                            $userId = $borrowing->getUserId();
+                            $bookId = $borrowing->getBookId();
+                            $userName = $empruntDAO->getUserNameById($userId);
+                            $bookName = $empruntDAO->getBookNameById($bookId);
+                            echo "<tr>
                 <td class='border px-4 py-2'>{$borrowing->getId()}</td>
                 <td class='border px-4 py-2'>{$userId}</td>
                 <td class='border px-4 py-2'>{$userName}</td>
@@ -211,16 +213,58 @@ $user_id = $_SESSION['user_id'];
                 <td class='border px-4 py-2'>{$borrowing->getBorrowDate()}</td>
                 <td class='border px-4 py-2'>{$borrowing->getDueDate()}</td>
                 <td class='border px-4 py-2'>{$borrowing->getReturnDate()}</td>
-               <td class='border px-4 py-2 status'></td>
-                    
+                <td class='border px-4 py-2' status></td>
                 <td class='border px-4 py-2'>
                     <button onclick=\"openReturnPopup('{$borrowing->getId()}')\" class='bg-green-500 text-white px-4 py-2 rounded'>Return</button>
                 </td>
             </tr>";
-                    }
-                    ?>
+                        }
+                        ?>
+                    </tbody>
                 </table>
+
             </div>
+
+
+            <h2 class="text-3xl font-bold text-center p-6">Liste des Frais de Retard</h2>
+            <div class="w-full flex items-center justify-center mb-20">
+                <table class="table-auto  bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden w-4/5 mb-20">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border px-4 py-2">User ID</th>
+                            <th class="border px-4 py-2">Book ID</th>
+                            <th class="border px-4 py-2">Book Title</th>
+                            <th class="border px-4 py-2">Borrow Date</th>
+                            <th class="border px-4 py-2">Due Date</th>
+                            <th class="border px-4 py-2">Return Date</th>
+                            <th class="border px-4 py-2">Frais de retard (€)</th>
+                            <th class="border px-4 py-2">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        require_once 'classes/DAO/EmpruntDAO.php';
+
+                        $empruntDAO = new EmpruntDAO("localhost", "root", "", "library");
+
+                        $lateFees = $empruntDAO->getLateFeesForBorrowings();
+                        foreach ($lateFees as $lateFee) : ?>
+                            <tr>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($lateFee['user_id']); ?></td>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($lateFee['book_id']); ?></td>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($lateFee['book_title']); ?></td>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($lateFee['borrow_date']); ?></td>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($lateFee['due_date']); ?></td>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($lateFee['return_date']); ?></td>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($lateFee['amount']); ?></td>
+                                <td class="border px-4 py-2"><?php echo htmlspecialchars($lateFee['status']); ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+
+            </div>
+
             <!-- popup -->
 
             <!--add user -->
@@ -284,9 +328,6 @@ $user_id = $_SESSION['user_id'];
                     <input type="hidden" id="return_id" name="id">
                     <input type="hidden" name="action" value="returnadmin">
 
-                    <label for="return_date" class="block text-sm font-medium text-gray-700">Return Date:</label>
-                    <input type="date" id="return_date" name="return_date" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full" required>
-
                     <label for="late_fee" class="block text-sm font-medium text-gray-700">Late Fee:</label>
                     <input type="number" id="late_fee" name="late_fee" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full">
 
@@ -303,7 +344,6 @@ $user_id = $_SESSION['user_id'];
         <script src="script.js"></script>
         <script>
             function openEditPopup(id, firstName, lastName, email, phoneNumber) {
-                // Remplir le formulaire de modification avec les données de l'utilisateur sélectionné
                 document.getElementById('edit_id').value = id;
                 document.getElementById('edit_firstName').value = firstName;
                 document.getElementById('edit_lastName').value = lastName;
@@ -336,13 +376,15 @@ $user_id = $_SESSION['user_id'];
             }
 
             document.addEventListener("DOMContentLoaded", function() {
-                const rows = document.querySelectorAll("#borrowingTable tbody tr");
+                const rows = document.querySelectorAll("#empruntTable tbody tr");
                 rows.forEach(row => {
-                    const dueDate = new Date(row.cells[6].innerText);
-                    const returnDate = row.cells[7].innerText ? new Date(row.cells[7].innerText) : null;
+                    const dueDate = new Date(row.cells[6].innerText.trim());
+                    const returnDate = row.cells[7].innerText.trim() ? new Date(row.cells[7].innerText.trim()) : null;
                     let status = "À temps";
+                    
                     if (returnDate && returnDate > dueDate) {
                         status = "En retard";
+                        row.cells[8].classList.add("text-red");
                     }
                     row.cells[8].innerText = status;
                 });
