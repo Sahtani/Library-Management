@@ -53,40 +53,6 @@ $user_id = $_SESSION['user_id'];
                         <li class='max-lg:border-b max-lg:py-2 px-3'>
                             <a href='javascript:void(0)' class='hover:text-blue-600 text-blue-600 block font-semibold transition-all'>Home</a>
                         </li>
-                        <li class='max-lg:border-b max-lg:py-2 px-3 group relative'><a href='javascript:void(0)' class='hover:text-blue-600 block font-semibold transition-all'>Pages
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current inline ml-1.5" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z" clip-rule="evenodd" data-original="#000000" />
-                                </svg>
-                            </a>
-
-                            <ul class='absolute shadow-lg bg-white space-y-3 lg:top-5 max-lg:top-8 -left-0 min-w-[250px] z-50 max-h-0 overflow-hidden group-hover:opacity-100 group-hover:max-h-[700px] px-6 group-hover:pb-4 group-hover:pt-6 transition-all duration-500'>
-                                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>About</a></li>
-                                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Contact</a></li>
-                                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Login</a></li>
-                                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Sign
-                                        up</a></li>
-                                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Blog</a></li>
-                            </ul>
-                        </li>
-                        <li class='max-lg:border-b max-lg:py-2 px-3 group relative'><a href='javascript:void(0)' class='hover:text-blue-600 block font-semibold transition-all'>Feature
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current inline ml-1.5" viewBox="0 0 24 24">
-                                    <path fill-rule="evenodd" d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z" clip-rule="evenodd" data-original="#000000" />
-                                </svg>
-                            </a>
-
-                            <ul class='absolute shadow-lg bg-white space-y-3 lg:top-5 max-lg:top-8 -left-0 min-w-[250px] z-50 max-h-0 overflow-hidden group-hover:opacity-100 group-hover:max-h-[700px] px-6 group-hover:pb-4 group-hover:pt-6 transition-all duration-500'>
-                                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Foods</a></li>
-                                <li class='border-b py-2 '>
-                                    <a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Sale</a>
-                                </li>
-                                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Marketing</a></li>
-                                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Investment</a></li>
-                            </ul>
-                        </li>
-                        <li class='max-lg:border-b max-lg:py-2 px-3'><a href='javascript:void(0)' class='hover:text-blue-600 block font-semibold transition-all'>Blog</a>
-                        </li>
-                        <li class='max-lg:border-b max-lg:py-2 px-3'><a href='javascript:void(0)' class='hover:text-blue-600 block font-semibold transition-all'>About</a>
-                        </li>
                     </ul>
                 </div>
 
@@ -111,7 +77,13 @@ $user_id = $_SESSION['user_id'];
 
         <div class="bg-blue-100 w-full">
 
-
+        <?php
+      if (isset($_SESSION['message'])) {
+        echo "<div>
+        <div class='p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 w-1/4 m-10' role='alert'>" . $_SESSION['message'] . "</div> </div>";
+        unset($_SESSION['message']);
+      }
+      ?>
             <button onclick="openModal()" class=" bg-blue-400 hover:bg-blue-300 text-center mt-10 ml-20 w-60 text-white font-semibold py-2 px-4 rounded">
                 Ajouter un utilisateur
             </button>

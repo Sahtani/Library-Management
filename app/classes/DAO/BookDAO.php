@@ -81,7 +81,7 @@ class BookDAO extends BaseDAO  {
     public function deleteBook($id) {
         $sql = "DELETE FROM books WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(":id", $id, PDO::PARAM_INT);
+        $stmt->bindParam(":id", $id);
         return $stmt->execute();
     }
 

@@ -1,13 +1,10 @@
 <?php
-session_start(); // Démarrer la session au début du fichier
-
-// Vérifiez si l'utilisateur est authentifié
+session_start();
 if (!isset($_SESSION['user_id'])) {
   header("Location: login.php");
   exit();
 }
 
-// Définissez la variable user_id à partir de la session
 $user_id = $_SESSION['user_id'];
 ?>
 
@@ -22,9 +19,11 @@ $user_id = $_SESSION['user_id'];
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
+  <link rel="stylesheet" href="public/css/footer.css">
+  <link rel="stylesheet" href="public/js/delete.js">
   <style>
     body {
       font-family: Poppins, sans-serif;
@@ -56,40 +55,6 @@ $user_id = $_SESSION['user_id'];
             <li class='max-lg:border-b max-lg:py-2 px-3'>
               <a href='javascript:void(0)' class='hover:text-blue-600 text-blue-600 block font-semibold transition-all'>Home</a>
             </li>
-            <li class='max-lg:border-b max-lg:py-2 px-3 group relative'><a href='javascript:void(0)' class='hover:text-blue-600 block font-semibold transition-all'>Pages
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current inline ml-1.5" viewBox="0 0 24 24">
-                  <path fill-rule="evenodd" d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z" clip-rule="evenodd" data-original="#000000" />
-                </svg>
-              </a>
-
-              <ul class='absolute shadow-lg bg-white space-y-3 lg:top-5 max-lg:top-8 -left-0 min-w-[250px] z-50 max-h-0 overflow-hidden group-hover:opacity-100 group-hover:max-h-[700px] px-6 group-hover:pb-4 group-hover:pt-6 transition-all duration-500'>
-                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>About</a></li>
-                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Contact</a></li>
-                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Login</a></li>
-                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Sign
-                    up</a></li>
-                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Blog</a></li>
-              </ul>
-            </li>
-            <li class='max-lg:border-b max-lg:py-2 px-3 group relative'><a href='javascript:void(0)' class='hover:text-blue-600 block font-semibold transition-all'>Feature
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 fill-current inline ml-1.5" viewBox="0 0 24 24">
-                  <path fill-rule="evenodd" d="M11.99997 18.1669a2.38 2.38 0 0 1-1.68266-.69733l-9.52-9.52a2.38 2.38 0 1 1 3.36532-3.36532l7.83734 7.83734 7.83734-7.83734a2.38 2.38 0 1 1 3.36532 3.36532l-9.52 9.52a2.38 2.38 0 0 1-1.68266.69734z" clip-rule="evenodd" data-original="#000000" />
-                </svg>
-              </a>
-
-              <ul class='absolute shadow-lg bg-white space-y-3 lg:top-5 max-lg:top-8 -left-0 min-w-[250px] z-50 max-h-0 overflow-hidden group-hover:opacity-100 group-hover:max-h-[700px] px-6 group-hover:pb-4 group-hover:pt-6 transition-all duration-500'>
-                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Foods</a></li>
-                <li class='border-b py-2 '>
-                  <a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Sale</a>
-                </li>
-                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Marketing</a></li>
-                <li class='border-b py-2 '><a href='javascript:void(0)' class='hover:text-blue-600 font-semibold block transition-all'>Investment</a></li>
-              </ul>
-            </li>
-            <li class='max-lg:border-b max-lg:py-2 px-3'><a href='javascript:void(0)' class='hover:text-blue-600 block font-semibold transition-all'>Blog</a>
-            </li>
-            <li class='max-lg:border-b max-lg:py-2 px-3'><a href='javascript:void(0)' class='hover:text-blue-600 block font-semibold transition-all'>About</a>
-            </li>
           </ul>
         </div>
 
@@ -113,7 +78,12 @@ $user_id = $_SESSION['user_id'];
     </header>
 
     <div class="bg-blue-100 w-full">
-
+      <?php
+      if (isset($_SESSION['message'])) {
+        echo "<div class='p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 w-1/4 m-10' role='alert'>" . $_SESSION['message'] . "</div>";
+        unset($_SESSION['message']);
+      }
+      ?>
 
       <div class="  flex flex-col flex-end">
         <button onclick="openModal()" class=" bg-blue-400 hover:bg-blue-300 text-center mt-10 ml-20 w-60 text-white font-semibold py-2 px-4 rounded">
@@ -126,7 +96,7 @@ $user_id = $_SESSION['user_id'];
       <div class="w-full flex items-center justify-center">
 
 
-        <table class="table-auto  bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden w-4/5">
+        <table id="booksTable" class="table-auto  bg-white border border-gray-200 shadow-md rounded-lg overflow-hidden w-4/5">
           <thead>
             <tr class="bg-gray-200">
               <th class="px-4 py-2">Titre</th>
@@ -151,9 +121,9 @@ $user_id = $_SESSION['user_id'];
                     <td class='px-4 py-2'>{$book->getGenre()}</td>
                     <td class='px-4 py-2'>
                         <button class='bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md' onclick=\"openEditPopup('{$book->getId()}', '{$book->getTitle()}', '{$book->getAuthor()}', '{$book->getPublicationYear()}', '{$book->getGenre()}')\">Modifier</button>
-                        <form action='book_action.php' method='post' class='inline'>
+                        <form action='book_action.php'  method='post' id='deleteBookForm' class='inline'>
                             <input type='hidden' name='id' value='{$book->getId()}'>
-                            <input type='button'  onclick='opendeleteModal()'  value='Supprimer' class='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md'>
+                            <input type='submit' name='delete'  value='Supprimer' class='bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md delete-btn'>
                         </form>
                     </td>
                 </tr>";
@@ -337,7 +307,7 @@ $user_id = $_SESSION['user_id'];
             <input type="hidden" id="return_id" name="id">
             <input type="hidden" name="action" value="return">
 
-           
+
             <input type="date" id="return_date" name="return_date" class="mt-1 mb-4 p-2 border border-gray-300 rounded w-full hidden " required>
 
             <div class="flex justify-end">
@@ -413,7 +383,36 @@ $user_id = $_SESSION['user_id'];
 
         document.getElementById('borrow_date').value = new Date().toISOString().split('T')[0];
         document.getElementById('return_date').value = new Date().toISOString().split('T')[0];
-   
+
+        // function deleteformSubmit(e,bookId) {
+        //     e.preventDefault();
+        //     const formData = new FormData(document.getElementById('deleteBookForm'));
+
+        //     fetch('book_action.php', {
+        //         method: 'POST',
+        //         body: new URLSearchParams(formData)
+        //     })
+        //     .then(response => {
+        //     console.log('r',response);
+        //         if (!response.ok) {
+
+        //             throw new Error('Network response was not ok');
+        //         }
+        //         return response.json();
+        //     })
+        //     .then(data => {
+        //       console.log('d',data);
+        //         if (data.error) {
+        //             alert('Error: ' + data.error);
+        //         } else {
+        //             alert(data.message); 
+        //         }
+        //     })
+        //     .catch(error => {
+
+        //         console.error('Erreur:', error);  console.log(error);
+        //     });
+        // }  
       </script>
     </div>
 </body>

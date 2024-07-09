@@ -13,14 +13,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id'];
             $new_due_date = $_POST['new_due_date'];
             $borrowingDAO->prolongerEmprunt($id, $new_due_date);
+        
+            $_SESSION['message']= "Emprunt prolongé avec succès.";
             header("Location: books.php");
-            echo "Emprunt prolongé avec succès.";
         } elseif ($action == 'return') {
             $id = $_POST['id'];
             $return_date = $_POST['return_date'];
             $borrowingDAO->retournerLivre($id, $return_date);
-            header("Location: books.php");
-            echo "Livre retourné avec succès.";
+           
+             $_SESSION['message']="Livre retourné avec succès.";
+             header("Location: books.php");
         }
     } else {
         $user_id = $_POST['user_id'];
@@ -28,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $borrow_date = $_POST['borrow_date'];
         $due_date = $_POST['due_date'];
         $borrowingDAO->emprunterLivre($user_id, $book_id, $borrow_date, $due_date);
-        header("Location: books.php");
-        echo "Livre emprunté avec succès.";
+        $_SESSION['message']="Livre emprunté avec succès.";
+        header("Location: users.php");
     }
 }
 ?>
